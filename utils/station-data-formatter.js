@@ -16,6 +16,7 @@ const stationDataFormatter = {
         //                text: 'station 1'
         //                icon: '...'
         //                icon_color: '...'
+        //                trend_icon: '...'
         //            }
         //            ...
         //            {
@@ -23,6 +24,7 @@ const stationDataFormatter = {
         //                text: '800'
         //                icon: '...'
         //                icon_color: '...'
+        //                trend_icon: '...'
         //            },
         //        ],
         //    },
@@ -65,31 +67,36 @@ const stationDataFormatter = {
                             name: station.location,
                             text: `Lat: ${station.latitude}<br>Lon: ${station.longitude}`,
                             icon: '',
-                            icon_color: 'grey'
+                            icon_color: 'grey',
+                            trend_icon: ''
                         },
                         {
                             name: 'Weather',
                             text: weatherHelper.weatherCodeToDescription(station.weather),
                             icon: weatherHelper.weatherCodeToIcon(station.weather),
-                            icon_color: 'grey'
+                            icon_color: 'grey',
+                            trend_icon: ''
                         },
                         {
                             name: 'Temperature',
                             text: isEmptyWeather ? 'N/A' : `${station.temperature} °C<br>Min: ${station.min_temp}<br>Max: ${station.max_temp}`,
                             icon: 'fa-thermometer-half',
-                            icon_color: 'silver'
+                            icon_color: 'silver',
+                            trend_icon: ''
                         },
                         {
                             name: 'Wind',
                             text: isEmptyWeather ? 'N/A' : `${station.wind_speed} bft<br>${weatherHelper.windDirectionFromDegree(station.wind_direction)}<br>Min: ${station.min_wind}<br>Max: ${station.max_wind}`,
                             icon: 'fa-wind',
-                            icon_color: 'teal'
+                            icon_color: 'teal',
+                            trend_icon: ''
                         },
                         {
                             name: 'Air Pressure',
                             text: isEmptyWeather ? 'N/A' : `${station.air_pressure} hPa<br>Min: ${station.min_pressure}<br>Max: ${station.max_pressure}`,
                             icon: 'fa-tachometer-alt',
-                            icon_color: 'olive'
+                            icon_color: 'olive',
+                            trend_icon: ''
                         }
                     ]
                 }

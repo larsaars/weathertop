@@ -1,8 +1,8 @@
 const readingsStore = require('../models/readings-store');
-const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
 
 const weatherHelper = {
     windDirectionFromDegree(degree) {
+        const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
         // degree is in range [0, 360]
         const index = Math.floor(Math.abs((degree + 11.25) % 360) / 22.5);
         return directions[index];
