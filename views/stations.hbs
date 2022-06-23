@@ -6,8 +6,10 @@
             {{#each this.station_data}}
                 <div class="p-2">
                     <div class="card position-relative text-white bg-dark mb-3" style="width: 15rem; height: 100%">
-                        <i class="fa {{icon}} fa-2x position-absolute top-0 end-0 m-3" style="color:{{icon_color}}"
-                           aria-hidden="true"></i>
+                        <div class="d-flex flex-column position-absolute top-0 end-0 m-3">
+                            <i class="fa {{icon}} fa-2x" style="color:{{icon_color}}"></i>
+                            <i class="mt-2 fa {{trend_icon}} fa-2x" style="color: antiquewhite"></i>
+                        </div>
                         <div class="card-body">
                             <h3 class="card-title">{{this.name}}</h3>
                             <p class="card-text">{{{this.text}}}</p>

@@ -60,7 +60,62 @@ const stationsStore = {
             'error fetching all stations and its data'
         );
 
-        return stationsWithMaxMinValuesAndLatestReadings.rows;
+        let  stationData = stationsWithMaxMinValuesAndLatestReadings.rows;
+
+        // add trend data to stations
+        // for this use multiple queries
+        for (let station of stationData) {
+            // get trends for this specific station
+            const trends = await this.getStationTrends(email, station.station_id);
+
+            if (trends !== undefined) {
+                // add to object
+                station.temperature_trend = trends.temperature_trend;
+                station.wind_trend = trends.wind_trend;
+                station.pressure_trend = trends.pressure_trend;
+            }
+        }
+
+        return stationData;
+    },
+    async getStationTrends(email, stationId) {
+        // return
+        // trends for temperature, air pressure and wind
+        // with -1, 0, 1 for different trends
+        const stationTrends = await dataStore.query(
+            'select\n' +
+            'sign(t1 - t2) as temperature_trend,\n' +
+            'sign(a1 - a2) as pressure_trend,\n' +
+            'sign(w1 - w2) as wind_trend\n' +
+            'from\n' +
+            '-- subquery with first and second row in one\n' +
+            '(select \n' +
+            'row1.email as email,\n' +
+            'row1.temperature as t1, \n' +
+            'row1.air_pressure as a1, \n' +
+            'row1.wind_speed as w1,\n' +
+            'row2.temperature as t2,\n' +
+            'row2.air_pressure as a2,\n' +
+            'row2.wind_speed as w2\n' +
+            'from readings row1\n' +
+            '-- join subquery (second row) to first row\n' +
+            'join\n' +
+            '(select station_id, temperature, air_pressure, wind_speed\n' +
+            'from readings\n' +
+            'where station_id=$2\n' +
+            'order by time desc\n' +
+            'limit 1 offset 1) as row2\n' +
+            'on row1.station_id = row2.station_id\n' +
+            '-- end of join\n' +
+            'where row1.station_id=$2\n' +
+            'order by time desc\n' +
+            'limit 1) as sub\n' +
+            'where email=$1',
+            [email, stationId],
+            'error fetching station trends'
+        );
+
+        return stationTrends.rows[0];
     },
     async createStation(email, station) {
         // returns true if everything went well

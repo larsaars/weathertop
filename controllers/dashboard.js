@@ -14,7 +14,7 @@ const dashboard = {
         const viewData = {
             title: 'Dashboard',
             stations: stationDataFormatter.formatStationData(
-                await stationsStore.getStationData(req.session.user)
+                await stationsStore.getStationData(req.session.user),
             )
         };
 

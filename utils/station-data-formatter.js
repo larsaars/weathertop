@@ -1,5 +1,5 @@
 const logger = require('../utils/logger');
-const weatherHelper = require('../utils/weather-helper');
+const weatherHelper = require('./weather-utility-functions');
 const readingsStore = require('../models/readings-store');
 
 const stationDataFormatter = {
@@ -50,6 +50,9 @@ const stationDataFormatter = {
         //     max_wind: 0,
         //     min_pressure: 0,
         //     max_pressure: 0
+        //     temperature_trend: 1
+        //     wind_trend: 0
+        //     pressure_trend: 0
         //   }
         // ]
 
@@ -82,21 +85,21 @@ const stationDataFormatter = {
                             text: isEmptyWeather ? 'N/A' : `${station.temperature} °C<br>Min: ${station.min_temp}<br>Max: ${station.max_temp}`,
                             icon: 'fa-thermometer-half',
                             icon_color: 'silver',
-                            trend_icon: ''
+                            trend_icon: weatherHelper.trendToIcon(station.temperature_trend)
                         },
                         {
                             name: 'Wind',
                             text: isEmptyWeather ? 'N/A' : `${station.wind_speed} bft<br>${weatherHelper.windDirectionFromDegree(station.wind_direction)}<br>Min: ${station.min_wind}<br>Max: ${station.max_wind}`,
                             icon: 'fa-wind',
                             icon_color: 'teal',
-                            trend_icon: ''
+                            trend_icon: weatherHelper.trendToIcon(station.wind_trend)
                         },
                         {
                             name: 'Air Pressure',
                             text: isEmptyWeather ? 'N/A' : `${station.air_pressure} hPa<br>Min: ${station.min_pressure}<br>Max: ${station.max_pressure}`,
                             icon: 'fa-tachometer-alt',
                             icon_color: 'olive',
-                            trend_icon: ''
+                            trend_icon: weatherHelper.trendToIcon(station.pressure_trend)
                         }
                     ]
                 }
